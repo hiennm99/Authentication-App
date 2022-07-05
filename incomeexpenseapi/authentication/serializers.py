@@ -1,3 +1,4 @@
+from ast import Try
 from asyncore import write
 from dataclasses import field
 from lib2to3.pgen2 import token
@@ -6,6 +7,8 @@ from django.forms import CharField
 from rest_framework import serializers
 from .models import User
 from django.contrib import auth
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
 from rest_framework.exceptions import AuthenticationFailed
 
 
@@ -74,3 +77,11 @@ class LoginSerializer(serializers.ModelSerializer):
             'tokens': user.tokens
         }
         return super().validate(attrs)
+
+
+class ResetPasswordEmailRequestSerializer(serializers.Serializer):
+    email=serializers.EmailField(min_length=2)
+
+    class Meta:
+        fields=['email']
+
